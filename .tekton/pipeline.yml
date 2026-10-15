@@ -42,7 +42,7 @@ spec:
         - name: output
           workspace: output
 
-    - name: lint
+    - name: flake8
       runAfter:
         - git-clone
       taskRef:
@@ -51,7 +51,7 @@ spec:
         - name: source
           workspace: output
 
-    - name: tests
+    - name: nose
       runAfter:
         - git-clone
       taskRef:
@@ -63,10 +63,10 @@ spec:
         - name: source
           workspace: output
 
-    - name: build
+    - name: buildah
       runAfter:
-        - lint
-        - tests
+        - flake8
+        - nose
       taskRef:
         name: buildah
         kind: ClusterTask
@@ -79,7 +79,7 @@ spec:
 
     - name: deploy
       runAfter:
-        - build
+        - buildah
       taskRef:
         name: openshift-client
         kind: ClusterTask
